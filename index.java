@@ -7,9 +7,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        final byte MONTHS_IN_YEAR = 12;
-        final byte PERCENT = 100;
-
         Scanner scanner = new Scanner(System.in);
 
         float rate = 0;
@@ -28,24 +25,18 @@ public class Main {
         while (true) {
             System.out.print("enter annual rate:");
             rate = scanner.nextFloat();
-            if (rate > 0 && rate <= 30) {
-                monthlyRate = (rate / PERCENT) / MONTHS_IN_YEAR;
+            if (rate > 0 && rate <= 30)
                 break;
-            }
             System.out.println("rate must be greater than zero and less or equal to 30");
         }
 
         while (true) {
             System.out.print("enter period:");
             period = scanner.nextByte();
-            if (period > 1 && period <= 30) {
-                n = period * 12;
+            if (period > 1 && period <= 30)
                 break;
-            }
             System.out.println("Period must be greater or equal to one and equal or less to 30");
         }
-        int numberOfPayments = period * MONTHS_IN_YEAR;
-
         System.out.println("your principal is " + principal);
         System.out.println("your montly rate is " + monthlyRate);
         System.out.println("period " + period);
@@ -56,10 +47,20 @@ public class Main {
 
         // / Math.pow((1 + monthlyRate), n) - 1 )
 
-        double mortgagePayment = principal
-                * (monthlyRate * Math.pow(1 + monthlyRate, n) / (Math.pow(1 + monthlyRate, n) - 1));
+        double mortgagePayment = calculateMortgage(principal, rate, period);
         String mortgageFormatted = NumberFormat.getCurrencyInstance().format(mortgagePayment);
         System.out.println("you Mortgage Payment will be: " + mortgagePayment);
         System.out.println("Mortgage Payment with currency: " + mortgageFormatted);
+    }
+
+    public static double calculateMortgage(int principal, float rate, byte period) {
+        final byte MONTHS_IN_YEAR = 12;
+        final byte PERCENT = 100;
+        int n = period * 12;
+        float monthlyRate = (rate / PERCENT) / MONTHS_IN_YEAR;
+        short numberOfPayments = (short) (period * MONTHS_IN_YEAR);
+        double mortgagePayment = principal
+                * (monthlyRate * Math.pow(1 + monthlyRate, n) / (Math.pow(1 + monthlyRate, n) - 1));
+        return mortgagePayment;
     }
 }
